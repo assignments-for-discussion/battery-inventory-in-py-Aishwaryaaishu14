@@ -1,20 +1,43 @@
+def bucket_sort(input_list):
+    # Find maximum value in the list and use length of the list to determine which value in the list goes into which bucket 
+    max_value = max(input_list)
+    size = max_value/len(input_list)
 
-def count_batteries_by_usage(cycles):
-  return {
-    "lowCount": 0,
-    "mediumCount": 0,
-    "highCount": 0
-  }
+    # Create n empty buckets where n is equal to the length of the input list
+    buckets_list= []
+    for x in range(len(input_list)):
+        buckets_list.append([]) 
 
+    # Put list elements into different buckets based on the size
+    for i in range(len(input_list)):
+        j = int (input_list[i] / size)
+        if j != len (input_list):
+            buckets_list[j].append(input_list[i])
+        else:
+            buckets_list[len(input_list) - 1].append(input_list[i])
 
-def test_bucketing_by_number_of_cycles():
-  print("Counting batteries by usage cycles...\n");
-  counts = count_batteries_by_usage([100, 300, 500, 600, 900, 1000])
-  assert(counts["lowCount"] == 2)
-  assert(counts["mediumCount"] == 3)
-  assert(counts["highCount"] == 1)
-  print("Done counting :)")
-
-
-if __name__ == '__main__':
-  test_bucketing_by_number_of_cycles()
+    # Sort elements within the buckets using Insertion Sort
+    for z in range(len(input_list)):
+        insertion_sort(buckets_list[z])
+            
+    # Concatenate buckets with sorted elements into a single list
+    final_output = []
+    for x in range(len (input_list)):
+        final_output = final_output + buckets_list[x]
+    return final_output
+  
+def insertion_sort(bucket):
+    for i in range (1, len (bucket)):
+        var = bucket[i]
+        j = i - 1
+        while (j >= 0 and var < bucket[j]):
+            bucket[j + 1] = bucket[j]
+            j = j - 1
+        bucket[j + 1] = var
+def main():
+    input_list = [1.20, 0.22, 0.43, 0.36,0.39,0.27]
+    print('ORIGINAL LIST:')
+    print(input_list)
+    sorted_list = bucket_sort(input_list)
+    print('SORTED LIST:')
+    print(sorted_list)
